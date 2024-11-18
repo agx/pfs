@@ -1,0 +1,64 @@
+stages:
+ - build
+ - test+docs
+ - deploy
+
+image: debian:trixie
+
+default:
+  # Protect CI infra from rogue jobs
+  timeout: 15 minutes
+  # Allow jobs to be caneled on new commits
+  interruptible: true
+  # Retry on infra hickups automatically
+  retry:
+    max: 1
+    when:
+      - 'api_failure'
+      - 'runner_system_failure'
+      - 'scheduler_failure'
+      - 'stuck_or_timeout_failure'
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    # Don't trigger a branch pipeline if there is an open MR
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH
+
+variables:
+  RUST_BACKTRACE: "full"
+  RUST_VERSION: stable
+  DEPS: |
+    git build-essential ca-certificates meson curl rustup 
+    meson libgtk-4-dev libadwaita-1-dev libglib2.0-dev gettext
+    patchelf desktop-file-utils
+  GIT_SUBMODULE_STRATEGY: recursive
+
+.common_before_script: &common_before_script
+  before_script:
+    - apt update
+    - apt install -y --no-install-recommends eatmydata
+    - eatmydata apt install -y --no-install-recommends $DEPS
+    - rustup default $RUST_VERSION
+
+build:
+  stage: build
+  <<: *common_before_script
+  script:
+    - meson setup -Dexamples=true -Dshared-lib=true _build
+    - meson install -C _build
+    - meson install -C _build
+    - meson test -C _build
+
+cargo-fmt:
+  stage: test+docs
+  needs: []
+  image: rust
+  interruptible: true
+  script:
+    - rustup component add rustfmt
+    - cargo fmt --check
+

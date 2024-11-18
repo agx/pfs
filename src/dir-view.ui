@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="PfsDirView" parent="AdwBin">
+    <property name="child">
+      <object class="GtkStack" id="view_stack">
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">folder</property>
+            <property name="child">
+              <object class="GtkScrolledWindow">
+                <property name="vscrollbar-policy">automatic</property>
+                <property name="hscrollbar-policy">never</property>
+                <property name="propagate-natural-height">True</property>
+                <property name="child">
+                  <object class="GtkGridView" id="grid_view">
+                    <property name="factory">item_factory</property>
+                    <property name="model">single_selection</property>
+                  </object>
+                </property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">empty</property>
+            <property name="child">
+              <object class="AdwStatusPage">
+                <property name="icon-name">folder-symbolic</property>
+                <property name="title" translatable="yes">Folder is empty</property>
+                <style>
+                  <class name="compact"/>
+                </style>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+
+  <object class="GtkDirectoryList" id="directory_list">
+    <property name="attributes">standard::display-name,standard::icon,standard::content-type</property>
+  </object>
+  <object class="GtkFilterListModel" id="type_filtered_list">
+    <property name="model">directory_list</property>
+    <property name="filter" bind-source="PfsDirView" bind-property="real-filter"
+              bind-flags="sync-create"/>
+  </object>
+  <object class="GtkFilterListModel" id="filtered_list">
+    <property name="model">type_filtered_list</property>
+    <signal name="notify::n-items" handler="on_n_items_changed" swapped="true"/>
+  </object>
+  <object class="GtkSortListModel" id="sorted_list">
+    <property name="model">filtered_list</property>
+  </object>
+  <object class="GtkSingleSelection" id="single_selection">
+    <property name="model">sorted_list</property>
+    <property name="autoselect">False</property>
+    <signal name="selection-changed" handler="on_selection_changed" swapped="true"/>
+  </object>
+  <object class="GtkSignalListItemFactory" id="item_factory">
+    <signal name="setup" handler="on_item_setup" swapped="true"/>
+    <signal name="bind" handler="on_item_bind" swapped="true"/>
+  </object>
+</interface>

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=PhoshFileSelectorDemo
+Exec=@DEMO@
+Icon=mobi.phosh.FileSelectorDemo
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

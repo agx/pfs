@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="PfsPlacesItem" parent="AdwBin">
+    <property name="valign">start</property>
+    <child>
+      <object class="AdwClamp">
+        <property name="maximum-size">0</property>
+        <property name="child">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkImage" id="icon">
+                <property name="halign">center</property>
+                <property name="hexpand">True</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="pixel-size">64</property>
+                <binding name="icon-name">
+                  <lookup name="icon-name" type="PfsPlacesItem"/>
+                </binding>
+                <accessibility>
+                  <relation name="labelled-by">label</relation>
+                </accessibility>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label">
+                <property name="ellipsize">middle</property>
+                <property name="justify">center</property>
+                <property name="lines">1</property>
+                <property name="wrap">True</property>
+                <binding name="label">
+                  <lookup name="place" type="PfsPlacesItem"/>
+                </binding>
+                <property name="wrap-mode">word-char</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>

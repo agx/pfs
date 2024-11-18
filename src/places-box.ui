@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="PfsPlacesBox" parent="AdwBin">
+    <property name="child">
+      <object class="GtkFlowBox" id="flow_box">
+        <property name="selection-mode">none</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <signal name="child-activated" handler="on_item_activated" swapped="true"/>
+      </object>
+    </property>
+  </template>
+</interface>

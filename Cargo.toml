@@ -1,0 +1,24 @@
+[package]
+name = "PhoshFileSelector"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+name = "pfs"
+path = "src/lib.rs"
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[[bin]]
+name = "pfs-demo"
+path = "src/pfs_demo.rs"
+
+[dependencies]
+gettext-rs = { version = "0.7", features = ["gettext-system"] }
+glib-macros = "0.20.5"
+gtk = { version = "0.9", package = "gtk4", features = ["gnome_47"] }
+gtk-macros = "0.3.0"
+
+[dependencies.adw]
+package = "libadwaita"
+version = "0.7"
+features = ["v1_6"]
