@@ -341,7 +341,7 @@ pub mod imp {
                 return;
             }
             glib::g_debug!(LOG_DOMAIN, "New filename: {filename:#?}");
-            if filename.len() > 0 {
+            if !filename.is_empty() {
                 self.set_filename(filename);
             }
         }
@@ -407,7 +407,7 @@ pub mod imp {
             text: &str,
         ) -> bool {
             if self.obj().mode() == FileSelectorMode::SaveFile {
-                if text.len() == 0 {
+                if text.is_empty() {
                     return false;
                 }
 
