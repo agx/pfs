@@ -359,22 +359,16 @@ impl DirView {
     #[template_callback]
     fn on_n_items_changed(&self) {
         let n_items = self.imp().filtered_list.get().n_items();
-        let pagename;
-        if n_items > 0 {
-            pagename = "folder";
-        } else {
-            pagename = "empty";
-        }
+        let pagename = if n_items > 0 { "folder" } else { "empty" };
         self.imp().view_stack.get().set_visible_child_name(pagename);
     }
 
     pub fn selected(&self) -> Option<Vec<String>> {
-        let vec;
-        if self.directories_only() {
-            vec = match self.folder().unwrap().path() {
+        let vec = if self.directories_only() {
+            match self.folder().unwrap().path() {
                 None => return None,
                 Some(_) => vec![self.folder().unwrap().uri().to_string()],
-            };
+            }
         } else {
             let selected = self.imp().single_selection.get().selected_item();
             let item = match selected {
@@ -391,8 +385,8 @@ impl DirView {
             let uri = file.downcast_ref::<gio::File>().unwrap().uri();
             glib::g_debug!(LOG_DOMAIN, "Uri {uri:#?}");
 
-            vec = vec![uri.to_string()];
-        }
+            vec![uri.to_string()]
+        };
         Some(vec)
     }
 
