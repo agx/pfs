@@ -123,7 +123,7 @@ impl PfsWindow {
             .property("title", "Select a File")
             .property("current-folder", gio::File::for_path("/home"))
             .property("filters", filters)
-            .property("current-filter", pos as u32)
+            .property("current-filter", pos)
             .build();
 
         let empty: Vec<(String, String)> = Vec::new();
