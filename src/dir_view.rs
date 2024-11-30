@@ -363,6 +363,15 @@ impl DirView {
         self.imp().view_stack.get().set_visible_child_name(pagename);
     }
 
+    #[template_callback]
+    fn on_activate(&self) {
+        glib::g_debug!(LOG_DOMAIN, "Item Activated");
+
+        let _ = self
+            .upcast_ref::<gtk::Widget>()
+            .activate_action("file-selector.accept", None);
+    }
+
     pub fn selected(&self) -> Option<Vec<String>> {
         let vec = if self.directories_only() {
             match self.folder().unwrap().path() {

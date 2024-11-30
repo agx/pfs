@@ -113,6 +113,10 @@ pub mod imp {
             klass.bind_template();
             klass.bind_template_callbacks();
 
+            klass.install_action("file-selector.accept", None, move |file_selector, _, _| {
+                file_selector.imp().on_accept_clicked();
+            });
+
             klass.set_accessible_role(gtk::AccessibleRole::Group);
         }
 
