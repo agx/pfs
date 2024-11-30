@@ -113,6 +113,10 @@ pub mod imp {
             klass.bind_template();
             klass.bind_template_callbacks();
 
+            klass.install_action("file-selector.accept", None, move |file_selector, _, _| {
+                file_selector.imp().on_accept_clicked();
+            });
+
             klass.set_accessible_role(gtk::AccessibleRole::Group);
         }
 
@@ -341,7 +345,7 @@ pub mod imp {
                 return;
             }
             glib::g_debug!(LOG_DOMAIN, "New filename: {filename:#?}");
-            if filename.len() > 0 {
+            if !filename.is_empty() {
                 self.set_filename(filename);
             }
         }
@@ -407,7 +411,7 @@ pub mod imp {
             text: &str,
         ) -> bool {
             if self.obj().mode() == FileSelectorMode::SaveFile {
-                if text.len() == 0 {
+                if text.is_empty() {
                     return false;
                 }
 
@@ -560,9 +564,9 @@ impl FileSelector {
             let path = self.current_folder().unwrap().path().unwrap();
             let file = gio::File::for_path(path.join(self.filename()));
 
-            return Some(vec![file.uri().to_string()]);
+            Some(vec![file.uri().to_string()])
         } else {
-            return items;
+            items
         }
     }
 

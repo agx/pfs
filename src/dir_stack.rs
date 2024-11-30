@@ -76,7 +76,7 @@ mod imp {
             let Some(folder) = folder else { return };
 
             // Update triggered by us, ignore
-            if self.is_updating.get() == true {
+            if self.is_updating.get() {
                 self.is_updating.replace(false);
                 return;
             }

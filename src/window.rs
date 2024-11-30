@@ -123,7 +123,7 @@ impl PfsWindow {
             .property("title", "Select a File")
             .property("current-folder", gio::File::for_path("/home"))
             .property("filters", filters)
-            .property("current-filter", pos as u32)
+            .property("current-filter", pos)
             .build();
 
         let empty: Vec<(String, String)> = Vec::new();
@@ -148,32 +148,38 @@ impl PfsWindow {
                     glib::g_debug!(LOG_DOMAIN, "File dialog done, result: {success:#?}");
                     let selected = selector.selected();
 
-                    let uris = match selected {
-                        None => vec!["".to_string()],
-                        Some(vec) => vec,
-                    };
-                    this.imp().selected_label.get().set_label(&uris[0]);
+                    this.imp().selected_label.get().set_label("");
+                    this.imp().choices_label.get().set_label("");
+                    this.imp().filter_label.get().set_label("");
 
-                    let text = match selector.selected_choices() {
-                        Some(choices) => choices.to_string(),
-                        None => "".to_string(),
-                    };
-                    this.imp().choices_label.get().set_label(&text);
+                    if success {
+                        let uris = match selected {
+                            None => vec!["".to_string()],
+                            Some(vec) => vec,
+                        };
+                        this.imp().selected_label.get().set_label(&uris[0]);
 
-                    let pos = selector.current_filter();
-                    let text = match selector.filters() {
-                        Some(filters) => match filters.item(pos) {
-                            Some(filter) => filter
-                                .downcast::<gtk::FileFilter>()
-                                .unwrap()
-                                .name()
-                                .unwrap()
-                                .to_string(),
+                        let text = match selector.selected_choices() {
+                            Some(choices) => choices.to_string(),
                             None => "".to_string(),
-                        },
-                        None => "".to_string(),
-                    };
-                    this.imp().filter_label.get().set_label(&text);
+                        };
+                        this.imp().choices_label.get().set_label(&text);
+
+                        let pos = selector.current_filter();
+                        let text = match selector.filters() {
+                            Some(filters) => match filters.item(pos) {
+                                Some(filter) => filter
+                                    .downcast::<gtk::FileFilter>()
+                                    .unwrap()
+                                    .name()
+                                    .unwrap()
+                                    .to_string(),
+                                None => "".to_string(),
+                            },
+                            None => "".to_string(),
+                        };
+                        this.imp().filter_label.get().set_label(&text);
+                    }
                 }
             ),
         );

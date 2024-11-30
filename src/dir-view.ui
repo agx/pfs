@@ -17,6 +17,7 @@
                   <object class="GtkGridView" id="grid_view">
                     <property name="factory">item_factory</property>
                     <property name="model">single_selection</property>
+                    <signal name="activate" handler="on_activate" swapped="true"/>
                   </object>
                 </property>
               </object>

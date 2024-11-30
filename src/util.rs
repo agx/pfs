@@ -71,8 +71,5 @@ pub fn is_valid_folder(folder: &Option<gio::File>) -> bool {
         return false;
     }
 
-    match folder.as_ref().unwrap().path() {
-        Some(_) => return true,
-        None => return false,
-    }
+    folder.as_ref().unwrap().path().is_some()
 }
