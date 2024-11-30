@@ -364,8 +364,14 @@ impl DirView {
     }
 
     #[template_callback]
-    fn on_activate(&self) {
-        glib::g_debug!(LOG_DOMAIN, "Item Activated");
+    fn on_activate(&self, pos: u32) {
+        glib::g_debug!(LOG_DOMAIN, "Item Activated {pos:#?}");
+
+        self.imp().single_selection.set_selected(pos);
+        // Only accept when we have a selection
+        if !self.has_selection() {
+            return;
+        }
 
         let _ = self
             .upcast_ref::<gtk::Widget>()
