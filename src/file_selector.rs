@@ -560,9 +560,9 @@ impl FileSelector {
             let path = self.current_folder().unwrap().path().unwrap();
             let file = gio::File::for_path(path.join(self.filename()));
 
-            return Some(vec![file.uri().to_string()]);
+            Some(vec![file.uri().to_string()])
         } else {
-            return items;
+            items
         }
     }
 
