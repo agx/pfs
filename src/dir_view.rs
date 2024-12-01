@@ -15,7 +15,7 @@ use std::cell::{Cell, RefCell};
 use std::cmp::Ordering;
 use std::sync::OnceLock;
 
-use crate::{config::LOG_DOMAIN, grid_item::GridItem, util};
+use crate::{config::LOG_DOMAIN, file_selector::SortMode, grid_item::GridItem, util};
 
 mod imp {
     use super::*;
@@ -56,6 +56,10 @@ mod imp {
         // Icon size of the items in the grid view
         #[property(get, set)]
         icon_size: Cell<u32>,
+
+        // What to sort for
+        #[property(get, set = Self::set_sort_mode, builder(SortMode::default()))]
+        pub sort_mode: RefCell<SortMode>,
 
         // Whether sort is reversed
         #[property(get, set = Self::set_reversed, explicit_notify)]
@@ -163,6 +167,24 @@ mod imp {
                 false => gtk::FilterChange::MoreStrict,
             };
             filter.emit_by_name::<()>("changed", &[&strict]);
+        }
+
+        fn set_sort_mode(&self, mode: SortMode) {
+            let obj = self.obj();
+
+            if *self.sort_mode.borrow() == mode {
+                return;
+            }
+
+            glib::g_debug!(LOG_DOMAIN, "Sort mode {mode:#?}");
+
+            *self.sort_mode.borrow_mut() = mode;
+            obj.notify_sort_mode();
+
+            // Resort
+            let sorter = self.sorted_list.sorter().unwrap();
+            let change = gtk::SorterChange::Inverted;
+            sorter.emit_by_name::<()>("changed", &[&change]);
         }
 
         fn set_reversed(&self, reversed: bool) {
@@ -399,6 +421,53 @@ impl DirView {
         Some(vec)
     }
 
+    fn sort_by_name(&self, info1: &gio::FileInfo, info2: &gio::FileInfo) -> gtk::Ordering {
+        match info1.display_name().cmp(&info2.display_name()) {
+            Ordering::Less => {
+                if self.imp().reversed.get() {
+                    return gtk::Ordering::Larger;
+                } else {
+                    return gtk::Ordering::Smaller;
+                }
+            }
+            Ordering::Greater => {
+                if self.imp().reversed.get() {
+                    return gtk::Ordering::Smaller;
+                } else {
+                    return gtk::Ordering::Larger;
+                }
+            }
+            Ordering::Equal => gtk::Ordering::Equal,
+        }
+    }
+
+    fn sort_by_modification_time(
+        &self,
+        info1: &gio::FileInfo,
+        info2: &gio::FileInfo,
+    ) -> gtk::Ordering {
+        match info1
+            .modification_date_time()
+            .cmp(&info2.modification_date_time())
+        {
+            Ordering::Less => {
+                if self.imp().reversed.get() {
+                    return gtk::Ordering::Larger;
+                } else {
+                    return gtk::Ordering::Smaller;
+                }
+            }
+            Ordering::Greater => {
+                if self.imp().reversed.get() {
+                    return gtk::Ordering::Smaller;
+                } else {
+                    return gtk::Ordering::Larger;
+                }
+            }
+            Ordering::Equal => gtk::Ordering::Equal,
+        }
+    }
+
     fn setup_sort_and_filer(&self) {
         let sorter = gtk::CustomSorter::new(clone!(
             #[weak(rename_to = this)]
@@ -426,22 +495,10 @@ impl DirView {
                     }
                 }
 
-                match info1.display_name().cmp(&info2.display_name()) {
-                    Ordering::Less => {
-                        if this.imp().reversed.get() {
-                            return gtk::Ordering::Larger;
-                        } else {
-                            return gtk::Ordering::Smaller;
-                        }
-                    }
-                    Ordering::Greater => {
-                        if this.imp().reversed.get() {
-                            return gtk::Ordering::Smaller;
-                        } else {
-                            return gtk::Ordering::Larger;
-                        }
-                    }
-                    Ordering::Equal => gtk::Ordering::Equal,
+                let mode = *this.imp().sort_mode.borrow();
+                match mode {
+                    SortMode::DisplayName => this.sort_by_name(&info1, &info2),
+                    SortMode::ModificationTime => this.sort_by_modification_time(&info1, &info2),
                 }
             }
         ));
