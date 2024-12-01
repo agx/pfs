@@ -381,6 +381,15 @@ pub mod imp {
         }
 
         #[template_callback]
+        fn folder_to_tooltip(&self) -> String {
+            let Some(file) = self.obj().current_folder() else {
+                return "".to_string();
+            };
+            let path = file.path().unwrap_or_default();
+            path.to_str().unwrap_or_default().to_string()
+        }
+
+        #[template_callback]
         fn n_items_to_visible(&self) -> bool {
             let Some(filters) = self.obj().filters() else {
                 return false;

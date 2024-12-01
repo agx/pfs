@@ -144,6 +144,11 @@
                             <lookup name="current-folder">PfsFileSelector</lookup>
                           </closure>
                         </binding>
+                        <binding name="tooltip-text">
+                          <closure type="gchararray" function="folder_to_tooltip">
+                            <lookup name="current-folder">PfsFileSelector</lookup>
+                          </closure>
+                        </binding>
                         <property name="ellipsize">end</property>
                       </object>
                     </child>
