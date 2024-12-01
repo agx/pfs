@@ -13,6 +13,7 @@ mod config;
 mod dir_stack;
 mod dir_view;
 mod grid_item;
+mod path_bar;
 mod places_box;
 mod places_item;
 mod util;
