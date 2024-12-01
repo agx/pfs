@@ -497,8 +497,7 @@ impl FileSelector {
                     };
 
                     action.set_state(&(what, reversed).to_variant());
-                    this.imp().dir_view.get().set_sort_mode(mode);
-                    this.imp().dir_view.get().set_reversed(reversed);
+                    this.imp().dir_view.get().set_sorting(mode, reversed);
                 }
             )
         );

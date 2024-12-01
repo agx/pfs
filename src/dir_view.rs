@@ -170,39 +170,21 @@ mod imp {
         }
 
         fn set_sort_mode(&self, mode: SortMode) {
-            let obj = self.obj();
-
             if *self.sort_mode.borrow() == mode {
                 return;
             }
 
-            glib::g_debug!(LOG_DOMAIN, "Sort mode {mode:#?}");
-
-            *self.sort_mode.borrow_mut() = mode;
-            obj.notify_sort_mode();
-
-            // Resort
-            let sorter = self.sorted_list.sorter().unwrap();
-            let change = gtk::SorterChange::Inverted;
-            sorter.emit_by_name::<()>("changed", &[&change]);
+            let reversed = self.reversed.get();
+            self.obj().set_sorting(mode, reversed);
         }
 
         fn set_reversed(&self, reversed: bool) {
-            let obj = self.obj();
-
             if self.reversed.get() == reversed {
                 return;
             }
 
-            glib::g_debug!(LOG_DOMAIN, "reversed {reversed:#?}");
-
-            self.reversed.replace(reversed);
-            obj.notify_reversed();
-
-            // Resort
-            let sorter = self.sorted_list.sorter().unwrap();
-            let change = gtk::SorterChange::Inverted;
-            sorter.emit_by_name::<()>("changed", &[&change]);
+            let mode = *self.sort_mode.borrow();
+            self.obj().set_sorting(mode, reversed);
         }
 
         fn set_directories_only(&self, directories_only: bool) {
@@ -529,5 +511,23 @@ impl DirView {
             }
         ));
         self.imp().filtered_list.set_filter(Some(&custom_filter));
+    }
+
+    pub fn set_sorting(&self, sort_mode: SortMode, reversed: bool) {
+        glib::g_debug!(
+            LOG_DOMAIN,
+            "Sorting mode {sort_mode:#?}, reversed: {reversed:#?}"
+        );
+
+        *self.imp().sort_mode.borrow_mut() = sort_mode;
+        self.imp().reversed.replace(reversed);
+
+        self.notify_sort_mode();
+        self.notify_reversed();
+
+        // Resort
+        let sorter = self.imp().sorted_list.sorter().unwrap();
+        let change = gtk::SorterChange::Inverted;
+        sorter.emit_by_name::<()>("changed", &[&change]);
     }
 }
