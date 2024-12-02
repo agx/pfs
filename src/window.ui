@@ -31,21 +31,24 @@
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkButton" id="open_file_button">
-                    <property name="label" translatable="yes">Open File…</property>
+                    <property name="label" translatable="yes">_Open File…</property>
+                    <property name="use-underline">True</property>
                     <property name="valign">center</property>
                     <property name="action-name">win.open-file</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">Save File…</property>
+                    <property name="label" translatable="yes">_Save File…</property>
+                    <property name="use-underline">True</property>
                     <property name="valign">center</property>
                     <property name="action-name">win.save-file</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">Save Files…</property>
+                    <property name="label" translatable="yes">Save _Files…</property>
+                    <property name="use-underline">True</property>
                     <property name="valign">center</property>
                     <property name="action-name">win.save-files</property>
                   </object>
