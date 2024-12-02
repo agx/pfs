@@ -10,7 +10,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use glib::subclass::Signal;
 use glib::translate::*;
 use glib_macros::{clone, Properties};
-use gtk::{gio, glib, CompositeTemplate};
+use gtk::{gdk, gio, glib, CompositeTemplate};
 use gtk_macros::stateful_action;
 use std::cell::{Cell, RefCell};
 use std::sync::OnceLock;
@@ -126,6 +126,12 @@ pub mod imp {
             });
 
             klass.set_accessible_role(gtk::AccessibleRole::Group);
+
+            klass.add_binding_action(
+                gdk::Key::Escape,
+                gdk::ModifierType::NO_MODIFIER_MASK,
+                "window.close",
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
