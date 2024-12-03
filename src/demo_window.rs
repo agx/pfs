@@ -19,7 +19,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, gtk::CompositeTemplate)]
-    #[template(resource = "/mobi/phosh/FileSelector/demo-window.ui")]
+    #[template(resource = "/mobi/phosh/FileSelectorDemo/demo-window.ui")]
     pub struct PfsDemoWindow {
         #[template_child]
         pub selected_label: TemplateChild<gtk::Label>,

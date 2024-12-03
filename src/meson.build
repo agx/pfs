@@ -43,6 +43,11 @@ endif
 
 if get_option('examples')
 
+gnome.compile_resources('demo',
+  'demo.gresource.xml',
+  gresource_bundle: true,
+)
+
 cargo_demo_build = custom_target(
   'cargo-build-demo',
   build_by_default: true,

@@ -30,6 +30,14 @@ mod imp {
     impl ObjectImpl for PfsDemoApplication {
         fn constructed(&self) {
             self.parent_constructed();
+
+            gio::resources_register_include_impl(include_bytes!(concat!(
+                env!("PFS_RESOURCE_DIR"),
+                "/",
+                "demo.gresource"
+            )))
+            .expect("Failed to register pfs resources.");
+
             let obj = self.obj();
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
