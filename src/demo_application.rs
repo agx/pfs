@@ -87,8 +87,8 @@ impl PfsDemoApplication {
     fn show_about(&self) {
         let window = self.active_window().unwrap();
         let about = adw::AboutDialog::builder()
-            .application_name("pfs")
-            .application_icon("mobi.phosh.Pfs")
+            .application_name("Phosh File Selector Demo")
+            .application_icon("mobi.phosh.FileSelectorDemo")
             .developer_name("Guido Günther")
             .version(VERSION)
             .developers(vec!["Guido Günther"])
