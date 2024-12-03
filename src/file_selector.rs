@@ -28,6 +28,14 @@ pub enum FileSelectorMode {
     SaveFiles,
 }
 
+#[derive(Debug, Copy, Clone, Default, PartialEq, gio::glib::Enum)]
+#[enum_type(name = "PfsSortMode")]
+pub enum SortMode {
+    #[default]
+    DisplayName,
+    ModificationTime,
+}
+
 pub mod imp {
     use super::*;
 
@@ -482,8 +490,14 @@ impl FileSelector {
                     let new_state: (String, bool) = param.get().unwrap();
                     let (what, reversed) = new_state;
 
+                    let mode = match what.as_str() {
+                        "name" => SortMode::DisplayName,
+                        "modified" => SortMode::ModificationTime,
+                        &_ => panic!("Invalid sort mode"),
+                    };
+
                     action.set_state(&(what, reversed).to_variant());
-                    this.imp().dir_view.get().set_reversed(reversed);
+                    this.imp().dir_view.get().set_sorting(mode, reversed);
                 }
             )
         );
