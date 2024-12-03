@@ -19,8 +19,8 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, gtk::CompositeTemplate)]
-    #[template(resource = "/mobi/phosh/FileSelector/window.ui")]
-    pub struct PfsWindow {
+    #[template(resource = "/mobi/phosh/FileSelector/demo-window.ui")]
+    pub struct PfsDemoWindow {
         #[template_child]
         pub selected_label: TemplateChild<gtk::Label>,
 
@@ -34,9 +34,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for PfsWindow {
-        const NAME: &'static str = "PfsWindow";
-        type Type = super::PfsWindow;
+    impl ObjectSubclass for PfsDemoWindow {
+        const NAME: &'static str = "PfsDemoWindow";
+        type Type = super::PfsDemoWindow;
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -59,25 +59,25 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for PfsWindow {
+    impl ObjectImpl for PfsDemoWindow {
         fn constructed(&self) {
             self.parent_constructed();
         }
     }
-    impl WidgetImpl for PfsWindow {}
-    impl WindowImpl for PfsWindow {}
-    impl ApplicationWindowImpl for PfsWindow {}
-    impl AdwApplicationWindowImpl for PfsWindow {}
+    impl WidgetImpl for PfsDemoWindow {}
+    impl WindowImpl for PfsDemoWindow {}
+    impl ApplicationWindowImpl for PfsDemoWindow {}
+    impl AdwApplicationWindowImpl for PfsDemoWindow {}
 }
 
 glib::wrapper! {
-    pub struct PfsWindow(ObjectSubclass<imp::PfsWindow>)
+    pub struct PfsDemoWindow(ObjectSubclass<imp::PfsDemoWindow>)
         @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,
         @implements gio::ActionGroup, gio::ActionMap;
 }
 
 #[gtk::template_callbacks]
-impl PfsWindow {
+impl PfsDemoWindow {
     pub fn new<P: IsA<gtk::Application>>(application: &P) -> Self {
         glib::Object::builder()
             .property("application", application)

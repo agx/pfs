@@ -12,7 +12,7 @@ use gettextrs::gettext;
 use gtk::{gio, glib};
 
 use crate::config::VERSION;
-use crate::PfsWindow;
+use crate::PfsDemoWindow;
 
 mod imp {
     use super::*;
@@ -40,7 +40,7 @@ mod imp {
         fn activate(&self) {
             let application = self.obj();
             let window = application.active_window().unwrap_or_else(|| {
-                let window = PfsWindow::new(&*application);
+                let window = PfsDemoWindow::new(&*application);
                 window.upcast()
             });
 

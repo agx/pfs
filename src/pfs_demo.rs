@@ -8,10 +8,10 @@
 
 mod application;
 mod config;
-mod window;
+mod demo_window;
 
 use self::application::PfsApplication;
-use self::window::PfsWindow;
+use self::demo_window::PfsDemoWindow;
 
 use config::{GETTEXT_PACKAGE, LOCALEDIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
