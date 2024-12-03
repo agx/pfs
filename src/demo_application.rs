@@ -18,16 +18,16 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct PfsApplication {}
+    pub struct PfsDemoApplication {}
 
     #[glib::object_subclass]
-    impl ObjectSubclass for PfsApplication {
-        const NAME: &'static str = "PfsApplication";
-        type Type = super::PfsApplication;
+    impl ObjectSubclass for PfsDemoApplication {
+        const NAME: &'static str = "PfsDemoApplication";
+        type Type = super::PfsDemoApplication;
         type ParentType = adw::Application;
     }
 
-    impl ObjectImpl for PfsApplication {
+    impl ObjectImpl for PfsDemoApplication {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
@@ -36,7 +36,7 @@ mod imp {
         }
     }
 
-    impl ApplicationImpl for PfsApplication {
+    impl ApplicationImpl for PfsDemoApplication {
         fn activate(&self) {
             let application = self.obj();
             let window = application.active_window().unwrap_or_else(|| {
@@ -48,17 +48,17 @@ mod imp {
         }
     }
 
-    impl GtkApplicationImpl for PfsApplication {}
-    impl AdwApplicationImpl for PfsApplication {}
+    impl GtkApplicationImpl for PfsDemoApplication {}
+    impl AdwApplicationImpl for PfsDemoApplication {}
 }
 
 glib::wrapper! {
-    pub struct PfsApplication(ObjectSubclass<imp::PfsApplication>)
+    pub struct PfsDemoApplication(ObjectSubclass<imp::PfsDemoApplication>)
         @extends gio::Application, gtk::Application, adw::Application,
         @implements gio::ActionGroup, gio::ActionMap;
 }
 
-impl PfsApplication {
+impl PfsDemoApplication {
     pub fn new(application_id: &str, flags: &gio::ApplicationFlags) -> Self {
         glib::Object::builder()
             .property("application-id", application_id)
