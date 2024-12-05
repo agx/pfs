@@ -76,7 +76,7 @@ cargo_static_lib_build = custom_target(
   console: true,
   command: [
     'env', cargo_env,
-    cargo_bin, 'build', cargo_opt,
+    cargo_bin, 'build', '--lib', cargo_opt,
     '&&', 'cp', meson.project_build_root() / 'src' / rust_target / 'libpfs.a', '@OUTPUT@',
   ]
 )
@@ -101,7 +101,7 @@ cargo_lib_build = custom_target(
   install_dir: get_option('libdir'),
   command: [
     'env', cargo_env,
-    cargo_bin, 'build', cargo_opt,
+    cargo_bin, 'build', '--lib', cargo_opt,
     '&&', 'cp', meson.project_build_root() / 'src' / rust_target / 'libpfs.so', meson.current_build_dir(),
     '&&', 'cp', meson.project_build_root() / 'src' / 'libpfs.so', '@OUTPUT@',
     '&&', patchelf_bin, '--set-soname', 'libpfs-0.so', '@OUTPUT@',
