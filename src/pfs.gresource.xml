@@ -7,8 +7,6 @@
     <file preprocess="xml-stripblanks">grid-item.ui</file>
     <file preprocess="xml-stripblanks">places-box.ui</file>
     <file preprocess="xml-stripblanks">places-item.ui</file>
-    <file preprocess="xml-stripblanks">window.ui</file>
-    <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
     <file preprocess="xml-stripblanks" alias="icons/scalable/status/funnel-symbolic.svg">../data/icons/funnel-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="icons/scalable/status/settings-symbolic.svg">../data/icons/settings-symbolic.svg</file>
     <file compressed="true" alias="style.css">stylesheet/style.css</file>

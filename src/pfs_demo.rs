@@ -6,12 +6,12 @@
  * Author: Guido Günther <agx@sigxcpu.org>
  */
 
-mod application;
 mod config;
-mod window;
+mod demo_application;
+mod demo_window;
 
-use self::application::PfsApplication;
-use self::window::PfsWindow;
+use self::demo_application::PfsDemoApplication;
+use self::demo_window::PfsDemoWindow;
 
 use config::{GETTEXT_PACKAGE, LOCALEDIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
@@ -26,7 +26,7 @@ fn main() -> glib::ExitCode {
 
     pfs::init::init();
 
-    let app = PfsApplication::new(
+    let app = PfsDemoApplication::new(
         "mobi.phosh.FileSelectorDemo",
         &gio::ApplicationFlags::empty(),
     );

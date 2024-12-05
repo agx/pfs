@@ -10,7 +10,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use glib::subclass::Signal;
 use glib::translate::*;
 use glib_macros::{clone, Properties};
-use gtk::{gio, glib, CompositeTemplate};
+use gtk::{gdk, gio, glib, CompositeTemplate};
 use gtk_macros::stateful_action;
 use std::cell::{Cell, RefCell};
 use std::sync::OnceLock;
@@ -126,6 +126,12 @@ pub mod imp {
             });
 
             klass.set_accessible_role(gtk::AccessibleRole::Group);
+
+            klass.add_binding_action(
+                gdk::Key::Escape,
+                gdk::ModifierType::NO_MODIFIER_MASK,
+                "window.close",
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -378,6 +384,15 @@ pub mod imp {
                 return "folder-symbolic";
             };
             util::folder_to_icon_name(file)
+        }
+
+        #[template_callback]
+        fn folder_to_tooltip(&self) -> String {
+            let Some(file) = self.obj().current_folder() else {
+                return "".to_string();
+            };
+            let path = file.path().unwrap_or_default();
+            path.to_str().unwrap_or_default().to_string()
         }
 
         #[template_callback]

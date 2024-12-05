@@ -2,7 +2,7 @@
 data/mobi.phosh.FileSelectorDemo.desktop.in.in
 data/mobi.phosh.FileSelectorDemo.metainfo.xml.in
 data/mobi.phosh.FileSelector.gschema.xml
-src/application.rs
+src/demo_application.rs
 src/gtk/help-overlay.ui
 src/pfs_demo.rs
-src/window.ui
+src/demo-window.ui
