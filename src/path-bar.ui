@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="PfsPathBar" parent="AdwBin">
+    <property name="margin-bottom">6</property>
+    <property name="margin-start">6</property>
+    <property name="margin-end">6</property>
+    <property name="child">
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="vscrollbar-policy">never</property>
+        <property name="hscrollbar-policy">automatic</property>
+        <property name="propagate-natural-width">True</property>
+        <child>
+          <object class="GtkBox" id="path_box">
+            <property name="halign">center</property>
+            <property name="height-request">46</property>
+            <style>
+              <class name="linked"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>
