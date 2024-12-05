@@ -50,6 +50,13 @@ build:
   script:
     - meson setup -Dexamples=true -Dshared-lib=true _build
     - meson install -C _build
+    - meson test -C _build
+
+build-lib:
+  stage: build
+  <<: *common_before_script
+  script:
+    - meson setup -Dexamples=false -Dshared-lib=false _build
     - meson install -C _build
     - meson test -C _build
 
