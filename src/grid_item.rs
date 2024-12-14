@@ -50,11 +50,6 @@ mod imp {
 
     impl GridItem {
         fn set_fileinfo(&self, info: gio::FileInfo) {
-            let obj = self.obj();
-
-            obj.bind_property("icon-size", &self.icon.get(), "pixel-size")
-                .sync_create()
-                .build();
             self.label.get().set_label(&info.display_name());
             if let Some(icon) = info.icon() {
                 self.icon.get().set_from_gicon(&icon)
