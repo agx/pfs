@@ -185,6 +185,7 @@ impl PfsDemoWindow {
         );
 
         file_selector.set_mode(FileSelectorMode::OpenFile);
+        file_selector.set_transient_for(Some(self));
         file_selector.present();
         *self.imp().file_selector.borrow_mut() = Some(file_selector);
     }
@@ -211,6 +212,7 @@ impl PfsDemoWindow {
         );
 
         file_selector.set_mode(FileSelectorMode::SaveFile);
+        file_selector.set_transient_for(Some(self));
         file_selector.present();
         *self.imp().file_selector.borrow_mut() = Some(file_selector);
     }
@@ -236,6 +238,7 @@ impl PfsDemoWindow {
         );
 
         file_selector.set_mode(FileSelectorMode::SaveFiles);
+        file_selector.set_transient_for(Some(self));
         file_selector.present();
         *self.imp().file_selector.borrow_mut() = Some(file_selector);
     }
