@@ -14,13 +14,13 @@ meson compile -C _build
 Running the Rust demo
 
 ```sh
-G_MESSAGES_DEBUG=pfs _build/src/pfs-demo
+G_MESSAGES_DEBUG=pfs ./_build/run _build/src/pfs-demo
 ```
 
 Running the C demo
 
 ```sh
-G_MESSAGES_DEBUG=pfs _build/src/examples/pfs-c-demo
+G_MESSAGES_DEBUG=pfs ./_build/run _build/src/examples/pfs-c-demo
 ```
 
 ## Getting in Touch

@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+ABS_BUILDDIR='@ABS_BUILDDIR@'
+
+GSETTINGS_SCHEMA_DIR="${ABS_BUILDDIR}/data:${GSETTINGS_SCHEMA_DIR}"
+export GSETTINGS_SCHEMA_DIR
+
+set -x
+exec $@
