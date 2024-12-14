@@ -247,7 +247,7 @@ mod imp {
             obj.set_icon_size(96);
             obj.set_directories_first(true);
 
-            self.obj().setup_sort_and_filer();
+            obj.setup_sort_and_filter();
 
             obj.bind_property("folder", &self.directory_list.get(), "file")
                 .sync_create()
@@ -456,7 +456,7 @@ impl DirView {
         }
     }
 
-    fn setup_sort_and_filer(&self) {
+    fn setup_sort_and_filter(&self) {
         let sorter = gtk::CustomSorter::new(clone!(
             #[weak(rename_to = this)]
             self,
