@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="pfs">
-	<schema id="mobi.phosh.FileSelector" path="/mobi/phosh/FileSelector/">
-	</schema>
+  <schema id="mobi.phosh.FileSelector" path="/mobi/phosh/FileSelector/">
+    <key name="icon-size" type="u">
+      <default>96</default>
+      <summary>The icon size</summary>
+      <description>The size of icons in the grid view</description>
+    </key>
+  </schema>
 </schemalist>
