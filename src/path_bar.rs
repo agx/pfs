@@ -127,7 +127,7 @@ glib::wrapper! {
 
 impl Default for PathBar {
     fn default() -> Self {
-        glib::Object::new::<Self>(/*&[]*/)
+        glib::Object::new::<Self>()
     }
 }
 

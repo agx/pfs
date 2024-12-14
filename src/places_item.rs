@@ -71,7 +71,7 @@ glib::wrapper! {
 
 impl Default for PlacesItem {
     fn default() -> Self {
-        glib::Object::new::<Self>(/*&[]*/)
+        glib::Object::new::<Self>()
     }
 }
 

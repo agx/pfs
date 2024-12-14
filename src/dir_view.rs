@@ -282,7 +282,7 @@ glib::wrapper! {
 
 impl Default for DirView {
     fn default() -> Self {
-        glib::Object::new::<Self>(/*&[]*/)
+        glib::Object::new::<Self>()
     }
 }
 

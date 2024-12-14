@@ -82,7 +82,7 @@ glib::wrapper! {
 
 impl Default for GridItem {
     fn default() -> Self {
-        glib::Object::new::<Self>(/*&[]*/)
+        glib::Object::new::<Self>()
     }
 }
 
