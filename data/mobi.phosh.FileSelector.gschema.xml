@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="pfs">
+  <enum id="mobi.phosh.FileSelector.ThumbnailMode">
+    <value value="0" nick="never"/>
+    <value value="1" nick="local"/>
+  </enum>
+
   <schema id="mobi.phosh.FileSelector" path="/mobi/phosh/FileSelector/">
+    <key name="thumbnail-mode" enum="mobi.phosh.FileSelector.ThumbnailMode">
+      <default>'local'</default>
+      <summary>Whether to show thumbnails</summary>
+      <description>Set to 'never' to not show pre-existing thumbnails</description>
+    </key>
+
     <key name="icon-size" type="u">
       <default>96</default>
       <summary>The icon size</summary>

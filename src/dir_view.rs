@@ -17,6 +17,14 @@ use std::sync::OnceLock;
 
 use crate::{config::LOG_DOMAIN, file_selector::SortMode, grid_item::GridItem, util};
 
+#[derive(Debug, Copy, Clone, Default, PartialEq, gio::glib::Enum)]
+#[enum_type(name = "PfsDirViewThumbnailMode")]
+pub enum ThumbnailMode {
+    #[default]
+    Never,
+    Local,
+}
+
 mod imp {
     use super::*;
 
@@ -84,6 +92,10 @@ mod imp {
         // The current filter type filter plus directories
         #[property(get, set = Self::set_type_filter, nullable, explicit_notify)]
         pub(super) real_filter: RefCell<Option<gtk::FileFilter>>,
+
+        // Whether to show thumbnails
+        #[property(get, set, builder(ThumbnailMode::default()))]
+        pub thumbnail_mode: RefCell<ThumbnailMode>,
     }
 
     #[glib::object_subclass]
@@ -310,6 +322,10 @@ impl DirView {
             .sync_create()
             .build();
 
+        self.bind_property("thumbnail-mode", &grid_item, "thumbnail-mode")
+            .sync_create()
+            .build();
+
         list_item.set_child(Some(&grid_item));
     }
 
@@ -522,6 +538,9 @@ impl DirView {
     fn setup_gsettings(&self) {
         let settings = gio::Settings::new("mobi.phosh.FileSelector");
         settings.bind("icon-size", self, "icon-size").build();
+        settings
+            .bind("thumbnail-mode", self, "thumbnail-mode")
+            .build();
     }
 
     pub fn set_sorting(&self, sort_mode: SortMode, reversed: bool) {

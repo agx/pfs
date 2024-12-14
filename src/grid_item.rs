@@ -12,6 +12,8 @@ use glib_macros::Properties;
 use gtk::{gio, glib, CompositeTemplate};
 use std::cell::{Cell, RefCell};
 
+use crate::dir_view::ThumbnailMode;
+
 mod imp {
     use super::*;
 
@@ -30,6 +32,9 @@ mod imp {
 
         #[property(get, set)]
         icon_size: Cell<u32>,
+
+        #[property(get, set = Self::set_thumbnail_mode, builder(ThumbnailMode::default()))]
+        pub thumbnail_mode: RefCell<ThumbnailMode>,
     }
 
     #[glib::object_subclass]
@@ -49,12 +54,44 @@ mod imp {
     }
 
     impl GridItem {
+        fn update_image(&self) {
+            let mut have_thumbnail = false;
+
+            let borrowed = self.fileinfo.borrow();
+            let Some(info) = borrowed.as_ref() else {
+                return;
+            };
+            if *self.thumbnail_mode.borrow() != ThumbnailMode::Never {
+                if let Some(path) = info.attribute_byte_string("thumbnail::path") {
+                    let valid = info.boolean("thumbnail::is-valid");
+                    if valid {
+                        self.icon.get().set_from_file(Some(path));
+                        have_thumbnail = true;
+                    }
+                }
+            };
+
+            if !have_thumbnail {
+                if let Some(icon) = info.icon() {
+                    self.icon.get().set_from_gicon(&icon)
+                };
+            }
+        }
+
         fn set_fileinfo(&self, info: gio::FileInfo) {
             self.label.get().set_label(&info.display_name());
-            if let Some(icon) = info.icon() {
-                self.icon.get().set_from_gicon(&icon)
-            }
+
             *self.fileinfo.borrow_mut() = Some(info);
+            self.update_image();
+        }
+
+        fn set_thumbnail_mode(&self, mode: ThumbnailMode) {
+            if *self.thumbnail_mode.borrow() == mode {
+                return;
+            }
+
+            self.thumbnail_mode.replace(mode);
+            self.update_image();
         }
     }
 
