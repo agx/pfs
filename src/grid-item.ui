@@ -16,6 +16,8 @@
                 <property name="hexpand">True</property>
                 <property name="valign">center</property>
                 <property name="vexpand">True</property>
+                <property name="pixel-size" bind-source="PfsGridItem" bind-property="icon-size" bind-flags="sync-create"/>
+                <property name="icon-name">image-loading</property>
                 <accessibility>
                   <relation name="labelled-by">label</relation>
                 </accessibility>

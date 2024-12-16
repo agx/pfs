@@ -124,7 +124,7 @@ glib::wrapper! {
 
 impl Default for DirStack {
     fn default() -> Self {
-        glib::Object::new::<Self>(/*&[]*/)
+        glib::Object::new::<Self>()
     }
 }
 

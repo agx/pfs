@@ -43,7 +43,7 @@
   </template>
 
   <object class="GtkDirectoryList" id="directory_list">
-    <property name="attributes">standard::display-name,standard::icon,standard::content-type,time::modified</property>
+    <property name="attributes">standard::display-name,standard::icon,standard::content-type,time::modified,thumbnail::*</property>
   </object>
   <object class="GtkFilterListModel" id="type_filtered_list">
     <property name="model">directory_list</property>

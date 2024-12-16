@@ -17,6 +17,14 @@ use std::sync::OnceLock;
 
 use crate::{config::LOG_DOMAIN, file_selector::SortMode, grid_item::GridItem, util};
 
+#[derive(Debug, Copy, Clone, Default, PartialEq, gio::glib::Enum)]
+#[enum_type(name = "PfsDirViewThumbnailMode")]
+pub enum ThumbnailMode {
+    #[default]
+    Never,
+    Local,
+}
+
 mod imp {
     use super::*;
 
@@ -84,6 +92,10 @@ mod imp {
         // The current filter type filter plus directories
         #[property(get, set = Self::set_type_filter, nullable, explicit_notify)]
         pub(super) real_filter: RefCell<Option<gtk::FileFilter>>,
+
+        // Whether to show thumbnails
+        #[property(get, set, builder(ThumbnailMode::default()))]
+        pub thumbnail_mode: RefCell<ThumbnailMode>,
     }
 
     #[glib::object_subclass]
@@ -217,7 +229,7 @@ mod imp {
                 return;
             }
 
-            // Ensure directories are always included in the filter so users's can browse
+            // Ensure directories are always included in the filter so users can browse
             // through them. We don't modify the passed in filter as the user might read
             // it back
             if type_filter.is_some() {
@@ -244,10 +256,10 @@ mod imp {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
-            obj.set_icon_size(96);
-            obj.set_directories_first(true);
 
-            self.obj().setup_sort_and_filer();
+            obj.setup_gsettings();
+            obj.set_directories_first(true);
+            obj.setup_sort_and_filter();
 
             obj.bind_property("folder", &self.directory_list.get(), "file")
                 .sync_create()
@@ -282,7 +294,7 @@ glib::wrapper! {
 
 impl Default for DirView {
     fn default() -> Self {
-        glib::Object::new::<Self>(/*&[]*/)
+        glib::Object::new::<Self>()
     }
 }
 
@@ -307,6 +319,10 @@ impl DirView {
         let grid_item = GridItem::new();
 
         self.bind_property("icon-size", &grid_item, "icon-size")
+            .sync_create()
+            .build();
+
+        self.bind_property("thumbnail-mode", &grid_item, "thumbnail-mode")
             .sync_create()
             .build();
 
@@ -456,7 +472,7 @@ impl DirView {
         }
     }
 
-    fn setup_sort_and_filer(&self) {
+    fn setup_sort_and_filter(&self) {
         let sorter = gtk::CustomSorter::new(clone!(
             #[weak(rename_to = this)]
             self,
@@ -517,6 +533,14 @@ impl DirView {
             }
         ));
         self.imp().filtered_list.set_filter(Some(&custom_filter));
+    }
+
+    fn setup_gsettings(&self) {
+        let settings = gio::Settings::new("mobi.phosh.FileSelector");
+        settings.bind("icon-size", self, "icon-size").build();
+        settings
+            .bind("thumbnail-mode", self, "thumbnail-mode")
+            .build();
     }
 
     pub fn set_sorting(&self, sort_mode: SortMode, reversed: bool) {
