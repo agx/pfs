@@ -235,12 +235,12 @@
         <item>
           <attribute name="label" translatable="yes">Last changed</attribute>
           <attribute name="action">file-selector.sort</attribute>
-          <attribute name="target" type="(sb)">('modified',true)</attribute>
+          <attribute name="target" type="(sb)">('mtime',true)</attribute>
         </item>
         <item>
           <attribute name="label" translatable="yes">First changed</attribute>
           <attribute name="action">file-selector.sort</attribute>
-          <attribute name="target" type="(sb)">('modified',false)</attribute>
+          <attribute name="target" type="(sb)">('mtime',false)</attribute>
         </item>
       </section>
       <section>

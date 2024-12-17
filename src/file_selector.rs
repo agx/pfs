@@ -32,8 +32,10 @@ pub enum FileSelectorMode {
 #[enum_type(name = "PfsSortMode")]
 pub enum SortMode {
     #[default]
-    DisplayName,
-    ModificationTime,
+    #[enum_value(nick = "name")]
+    DisplayName = 0,
+    #[enum_value(nick = "mtime")]
+    ModificationTime = 1,
 }
 
 pub mod imp {
@@ -67,6 +69,8 @@ pub mod imp {
         done: Cell<bool>,
 
         pub(super) choices_actions: RefCell<Option<gio::SimpleActionGroup>>,
+
+        pub(super) settings: RefCell<Option<gio::Settings>>,
 
         //
         // Properties mapping to the portal spec
@@ -143,7 +147,10 @@ pub mod imp {
     impl ObjectImpl for FileSelector {
         fn constructed(&self) {
             self.parent_constructed();
-            self.obj().setup_gactions();
+
+            let obj = self.obj();
+            obj.setup_gsettings();
+            obj.setup_gactions();
         }
 
         fn signals() -> &'static [Signal] {
@@ -471,6 +478,25 @@ impl FileSelector {
         Self::default()
     }
 
+    fn setup_gsettings(&self) {
+        let settings = gio::Settings::new("mobi.phosh.FileSelector");
+        *self.imp().settings.borrow_mut() = Some(settings);
+    }
+
+    fn set_sort_mode(&self, name: &str, reversed: bool) {
+        let binding = self.imp().settings.borrow();
+        let settings = binding.as_ref().unwrap();
+
+        let enum_type = glib::EnumClass::with_type(SortMode::static_type()).unwrap();
+        let mode = enum_type
+            .value_by_nick(name)
+            .expect("Invalid Sort mode {name}");
+        let _ = settings.set_enum("sort-by", mode.value());
+        let _ = settings.set_boolean("sort-reverse", reversed);
+        let m = unsafe { SortMode::from_glib(mode.value()) };
+        self.imp().dir_view.get().set_sorting(m, reversed);
+    }
+
     fn setup_gactions(&self) {
         let actions = gio::SimpleActionGroup::new();
         stateful_action!(
@@ -491,7 +517,13 @@ impl FileSelector {
             )
         );
 
-        let sort_by = ("name", false);
+        let binding = self.imp().settings.borrow();
+        let settings = binding.as_ref().unwrap();
+
+        let enum_type = glib::EnumClass::with_type(SortMode::static_type()).unwrap();
+        let mode_name = enum_type.value(settings.enum_("sort-by")).unwrap().nick();
+        let reversed = settings.boolean("sort-reverse");
+        let sort_by = (mode_name, reversed);
         stateful_action!(
             actions,
             "sort",
@@ -505,17 +537,12 @@ impl FileSelector {
                     let new_state: (String, bool) = param.get().unwrap();
                     let (what, reversed) = new_state;
 
-                    let mode = match what.as_str() {
-                        "name" => SortMode::DisplayName,
-                        "modified" => SortMode::ModificationTime,
-                        &_ => panic!("Invalid sort mode"),
-                    };
-
+                    this.set_sort_mode(&what, reversed);
                     action.set_state(&(what, reversed).to_variant());
-                    this.imp().dir_view.get().set_sorting(mode, reversed);
                 }
             )
         );
+        self.set_sort_mode(mode_name, reversed);
 
         let pos = self.imp().current_filter.get().to_string();
         stateful_action!(

@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="pfs">
+  <enum id="mobi.phosh.FileSelector.SortMode">
+    <value value="0" nick="name"/>
+    <value value="1" nick="mtime"/>
+  </enum>
+
   <enum id="mobi.phosh.FileSelector.ThumbnailMode">
     <value value="0" nick="never"/>
     <value value="1" nick="local"/>
   </enum>
 
   <schema id="mobi.phosh.FileSelector" path="/mobi/phosh/FileSelector/">
+    <key name="sort-by" enum="mobi.phosh.FileSelector.SortMode">
+      <default>'name'</default>
+      <summary>What to use for sorting</summary>
+      <description>
+        How the files in the view are sorted. Valid values are 'name'
+        (the filename) and 'mtime' (the modification time).
+      </description>
+    </key>
+
+    <key type="b" name="sort-reverse">
+      <default>false</default>
+      <summary>Whether sort is reversed</summary>
+      <description>If true, items are sorted in reverse order.</description>
+    </key>
+
     <key name="thumbnail-mode" enum="mobi.phosh.FileSelector.ThumbnailMode">
       <default>'local'</default>
       <summary>Whether to show thumbnails</summary>
