@@ -9,6 +9,21 @@
 use gtk::gio::prelude::*;
 use gtk::{gio, glib};
 
+#[macro_export]
+macro_rules! stateful_action {
+    ($actions_group:expr, $name:expr, $state:expr, $callback:expr) => {
+        let simple_action = gio::SimpleAction::new_stateful($name, None, &$state.to_variant());
+        simple_action.connect_activate($callback);
+        $actions_group.add_action(&simple_action);
+    };
+    ($actions_group:expr, $name:expr, $param_type:expr, $state:expr, $callback:expr) => {
+        let simple_action =
+            gio::SimpleAction::new_stateful($name, $param_type, &$state.to_variant());
+        simple_action.connect_activate($callback);
+        $actions_group.add_action(&simple_action);
+    };
+}
+
 pub static SPECIAL_DIRS: [(glib::UserDirectory, &str); 5] = [
     (glib::UserDirectory::Documents, "folder-documents-symbolic"),
     (glib::UserDirectory::Downloads, "folder-download-symbolic"),

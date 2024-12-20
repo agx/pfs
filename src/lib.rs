@@ -16,4 +16,5 @@ mod grid_item;
 mod path_bar;
 mod places_box;
 mod places_item;
+#[macro_use]
 mod util;

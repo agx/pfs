@@ -11,12 +11,12 @@ use glib::subclass::Signal;
 use glib::translate::*;
 use glib_macros::{clone, Properties};
 use gtk::{gdk, gio, glib, CompositeTemplate};
-use gtk_macros::stateful_action;
 use std::cell::{Cell, RefCell};
 use std::sync::OnceLock;
 
 use crate::{
-    config::LOG_DOMAIN, dir_stack::DirStack, dir_view::DirView, places_box::PlacesBox, util,
+    config::LOG_DOMAIN, dir_stack::DirStack, dir_view::DirView, places_box::PlacesBox,
+    stateful_action, util,
 };
 
 #[derive(Debug, Copy, Clone, Default, PartialEq, gio::glib::Enum)]
