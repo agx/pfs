@@ -102,35 +102,35 @@
               <object class="AdwClamp">
                 <property name="maximum-size">360</property>
                 <property name="child">
-              <object class="GtkCenterBox">
-                <binding name="visible">
-                  <closure type="gboolean" function="mode_to_filename_entry">
-                    <lookup name="mode">PfsFileSelector</lookup>
-                  </closure>
-                </binding>
-                <property name="height-request">46</property>
-                <property name="start-widget">
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">Name</property>
-                    <property name="halign">end</property>
-                    <property name="hexpand">True</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                  </object>
-                </property>
-                <property name="center-widget">
-                  <object class="GtkEntry">
-                    <property name="valign">center</property>
-                    <property name="hexpand">True</property>
-                    <property name="buffer">
-                      <object class="GtkEntryBuffer" id="filename_buffer">
-                        <property name="text" bind-source="PfsFileSelector" bind-property="filename"
-                                  bind-flags="sync-create|bidirectional"/>
+                  <object class="GtkCenterBox">
+                    <binding name="visible">
+                      <closure type="gboolean" function="mode_to_filename_entry">
+                        <lookup name="mode">PfsFileSelector</lookup>
+                      </closure>
+                    </binding>
+                    <property name="height-request">46</property>
+                    <property name="start-widget">
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Name</property>
+                        <property name="halign">end</property>
+                        <property name="hexpand">True</property>
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                      </object>
+                    </property>
+                    <property name="center-widget">
+                      <object class="GtkEntry">
+                        <property name="valign">center</property>
+                        <property name="hexpand">True</property>
+                        <property name="buffer">
+                          <object class="GtkEntryBuffer" id="filename_buffer">
+                            <property name="text" bind-source="PfsFileSelector" bind-property="filename"
+                                      bind-flags="sync-create|bidirectional"/>
+                          </object>
+                        </property>
                       </object>
                     </property>
                   </object>
-                </property>
-              </object>
                 </property>
               </object>
             </child>
