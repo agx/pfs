@@ -55,7 +55,7 @@
                         <property name="use-underline">True</property>
                       </object>
                     </property>
-	            <signal name="clicked" handler="on_accept_clicked" swapped="true"/>
+                    <signal name="clicked" handler="on_accept_clicked" swapped="true"/>
                     <style>
                       <class name="suggested-action"/>
                     </style>
@@ -112,7 +112,7 @@
                     <property name="buffer">
                       <object class="GtkEntryBuffer" id="filename_buffer">
                         <property name="text" bind-source="PfsFileSelector" bind-property="filename"
-                                 bind-flags="sync-create|bidirectional"/>
+                                  bind-flags="sync-create|bidirectional"/>
                       </object>
                     </property>
                   </object>
