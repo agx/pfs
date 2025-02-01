@@ -1,14 +1,16 @@
-project('PhoshFileSelector', ['rust', 'c'],
-          version: '0.0.0',
-    meson_version: '>= 1.0.0',
-  default_options: [ 'warning_level=2', 'werror=false', ],
+project(
+  'PhoshFileSelector',
+  ['rust', 'c'],
+  version: '0.0.0',
+  meson_version: '>= 1.0.0',
+  default_options: ['warning_level=2', 'werror=false'],
 )
 
 demo = 'pfs-demo'
 
 i18n = import('i18n')
 gnome = import('gnome')
-pkgconfig = import ('pkgconfig')
+pkgconfig = import('pkgconfig')
 
 gtk_dep = dependency('gtk4', version: '>=4.14')
 libadwaita_dep = dependency('libadwaita-1', version: '>=1.4')
@@ -20,13 +22,10 @@ subdir('po')
 
 run_data = configuration_data()
 run_data.set('ABS_BUILDDIR', meson.current_build_dir())
-configure_file(
-  input: 'run.in',
-  output: 'run',
-  configuration: run_data)
+configure_file(input: 'run.in', output: 'run', configuration: run_data)
 
 gnome.post_install(
-     glib_compile_schemas: true,
-    gtk_update_icon_cache: get_option('examples'),
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: get_option('examples'),
   update_desktop_database: get_option('examples'),
 )
