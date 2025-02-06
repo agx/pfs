@@ -1,6 +1,13 @@
+include:
+ - project: 'guidog/meta-phosh'
+   ref: '3629f479a3b1d37077137f05f988028c6e712378'
+   file: '/ci/phosh-common-jobs.yml'
+ - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/d03cddbcff35f26861429fc816c00323f48e99af/templates/ci-fairy.yml'
+
 stages:
  - build
  - test+docs
+ - style-checks
  - deploy
 
 image: debian:trixie
@@ -29,10 +36,12 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 variables:
+  # For ci-fairy
+  FDO_UPSTREAM_REPO: guidog/pfs
   RUST_BACKTRACE: "full"
   RUST_VERSION: stable
   DEPS: |
-    git build-essential ca-certificates meson curl rustup 
+    git build-essential ca-certificates meson curl rustup
     meson libgtk-4-dev libadwaita-1-dev libglib2.0-dev gettext
     patchelf desktop-file-utils
   GIT_SUBMODULE_STRATEGY: recursive
@@ -60,8 +69,16 @@ build-lib:
     - meson install -C _build
     - meson test -C _build
 
-cargo-fmt:
+check-po:
   stage: test+docs
+  extends: .phosh-check-po
+
+check-consistency:
+  stage: test+docs
+  extends: .phosh-check-consistency
+
+cargo-fmt:
+  stage: style-checks
   needs: []
   image: rust
   interruptible: true
@@ -69,3 +86,31 @@ cargo-fmt:
     - rustup component add rustfmt
     - cargo fmt --check
 
+# Sanity checks of MR settings and commit logs
+check-commit-log:
+  extends:
+    - .fdo.ci-fairy
+  stage: style-checks
+  variables:
+    GIT_DEPTH: "100"
+  needs: []
+  script: |
+    ci-fairy check-commits --junit-xml=commit-message-junit-report.xml
+  artifacts:
+    reports:
+      junit: commit-message-junit-report.xml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+
+check-markdown:
+  stage: style-checks
+  variables:
+    PHOSH_MARKDOWN_PATHS: "*.md doc/*.md"
+  extends:
+    - .phosh-check-markdown
+
+check-meson:
+  stage: style-checks
+  image: ${PHOSH_DOCKER_IMAGE}
+  extends:
+    - .phosh-check-meson

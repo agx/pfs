@@ -236,11 +236,13 @@
     <menu id="dir_view_menu">
       <section>
         <item>
+          <!-- Translators: This is a sort order for files -->
           <attribute name="label" translatable="yes">A-Z</attribute>
           <attribute name="action">file-selector.sort</attribute>
           <attribute name="target" type="(sb)">('name',false)</attribute>
         </item>
         <item>
+          <!-- Translators: This is a sort order for files -->
           <attribute name="label" translatable="yes">Z-A</attribute>
           <attribute name="action">file-selector.sort</attribute>
           <attribute name="target" type="(sb)">('name',true)</attribute>
@@ -248,11 +250,13 @@
       </section>
       <section>
         <item>
+          <!-- Translators: This is a sort order for files -->
           <attribute name="label" translatable="yes">Last changed</attribute>
           <attribute name="action">file-selector.sort</attribute>
           <attribute name="target" type="(sb)">('mtime',true)</attribute>
         </item>
         <item>
+          <!-- Translators: This is a sort order for files -->
           <attribute name="label" translatable="yes">First changed</attribute>
           <attribute name="action">file-selector.sort</attribute>
           <attribute name="target" type="(sb)">('mtime',false)</attribute>

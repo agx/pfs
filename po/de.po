@@ -1,0 +1,73 @@
+# German translation for pfs
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the pfs package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pfs\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/guidog/pfs\n"
+"POT-Creation-Date: 2025-02-01 10:49+0100\n"
+"PO-Revision-Date: 2025-02-01 10:49+0100\n"
+"Last-Translator: Guido Günther <agx@sigxcpu.org>"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/file_selector.rs:586
+msgid "Overwrite existing file {} in {}?"
+msgstr "Bestehende Datei {} in {} überschreiben?"
+
+#: src/file_selector.rs:591
+msgid "Replace existing file?"
+msgstr "Bestehende Datei ersetzen?"
+
+#: src/file_selector.rs:597
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/file_selector.rs:598
+msgid "_Replace"
+msgstr "_Ersetzen"
+
+#: src/places_box.rs:61 src/util.rs:38
+msgid "Recent"
+msgstr ""
+
+#: src/places_box.rs:69
+msgid "Home"
+msgstr ""
+
+#: src/places_box.rs:96 src/util.rs:39
+msgid "Trash"
+msgstr ""
+
+#: src/dir-view.ui:33
+msgid "Folder is empty"
+msgstr "Der Ordner ist leer"
+
+#: src/file-selector.ui:114
+msgid "Name"
+msgstr "Name"
+
+#: src/file-selector.ui:239
+msgid "A-Z"
+msgstr "A-Z"
+
+#: src/file-selector.ui:244
+msgid "Z-A"
+msgstr "Z-A"
+
+#: src/file-selector.ui:251
+msgid "Last changed"
+msgstr "Zuletzt geändert"
+
+#: src/file-selector.ui:256
+msgid "First changed"
+msgstr "Zuerst geändert"
+
+#: src/file-selector.ui:263
+msgid "Show _Hidden Files"
+msgstr "_Versteckte Dateien anzeigen"
