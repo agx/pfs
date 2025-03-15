@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Phosh Developers
+ * Copyright 2024-2025 The Phosh Developers
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
@@ -65,6 +65,12 @@ pub mod imp {
 
         #[template_child]
         pub choices_menu_button: TemplateChild<gtk::MenuButton>,
+
+        #[template_child]
+        pub search_bar: TemplateChild<gtk::SearchBar>,
+
+        #[template_child]
+        pub search_entry: TemplateChild<gtk::SearchEntry>,
 
         done: Cell<bool>,
 
@@ -231,6 +237,12 @@ pub mod imp {
             };
             obj.set_directory(directories_only);
 
+            self.search_bar.set_key_capture_widget(None::<&gtk::Widget>);
+            if mode == FileSelectorMode::OpenFile {
+                self.search_bar
+                    .set_key_capture_widget(Some(obj.upcast_ref::<gtk::Widget>()));
+            }
+
             *self.mode.borrow_mut() = mode;
             obj.notify_mode();
         }
@@ -358,6 +370,7 @@ pub mod imp {
             glib::g_debug!(LOG_DOMAIN, "New uri {uri:#?}");
             self.obj().set_current_folder(gio::File::for_uri(&uri));
             self.bottom_sheet.get().set_open(false);
+            self.search_entry.set_text("");
         }
 
         #[template_callback]
@@ -458,6 +471,13 @@ pub mod imp {
                 FileSelectorMode::SaveFile => true,
                 FileSelectorMode::SaveFiles => false,
             }
+        }
+
+        #[template_callback]
+        fn on_search_changed(&self, entry: gtk::Editable) {
+            let search_term = entry.text();
+
+            self.dir_view.set_search_term(search_term);
         }
     }
 }

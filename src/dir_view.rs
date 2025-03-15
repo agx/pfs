@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Phosh Developers
+ * Copyright 2024-2025 The Phosh Developers
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
@@ -23,6 +23,15 @@ pub enum ThumbnailMode {
     #[default]
     Never,
     Local,
+}
+
+#[derive(Debug, Copy, Clone, Default, PartialEq, gio::glib::Enum)]
+#[enum_type(name = "PfsDirViewDisplayMode")]
+pub enum DisplayMode {
+    #[default]
+    Content, // folder content is displayed
+    Search,  // search results are displayed
+    Loading, // folder content is loading
 }
 
 mod imp {
@@ -60,6 +69,13 @@ mod imp {
         // `true` if there's a selected item
         #[property(get, explicit_notify)]
         pub(super) has_selection: Cell<bool>,
+
+        #[property(get, builder(DisplayMode::default()))]
+        pub display_mode: Cell<DisplayMode>,
+
+        // The current search term (if any)
+        #[property(get, set = Self::set_search_term, explicit_notify)]
+        pub(super) search_term: RefCell<Option<String>>,
 
         // Icon size of the items in the grid view
         #[property(get, set)]
@@ -249,6 +265,59 @@ mod imp {
             obj.notify_type_filter();
             obj.notify_real_filter();
         }
+
+        fn set_search_term(&self, search_term: Option<String>) {
+            let strict;
+            let obj = self.obj();
+            let mut new_term: Option<String> = None;
+
+            {
+                if search_term.is_some() {
+                    new_term = Some(search_term.as_ref().unwrap().trim().to_lowercase());
+                }
+
+                // old_term only borrowed in this block
+                let old_term = self.search_term.borrow();
+                if *old_term == new_term {
+                    return;
+                }
+
+                if old_term.is_none() || new_term.is_none() {
+                    strict = gtk::FilterChange::Different;
+                } else if old_term
+                    .as_ref()
+                    .unwrap()
+                    .starts_with(new_term.as_ref().unwrap())
+                {
+                    strict = gtk::FilterChange::LessStrict;
+                } else if new_term
+                    .as_ref()
+                    .unwrap()
+                    .starts_with(old_term.as_ref().unwrap())
+                {
+                    strict = gtk::FilterChange::MoreStrict;
+                } else {
+                    strict = gtk::FilterChange::Different;
+                }
+            }
+
+            let mode;
+            if new_term.is_some() && new_term.as_ref().unwrap().len() > 0 {
+                mode = DisplayMode::Search;
+            } else {
+                mode = DisplayMode::Content;
+            }
+            if self.display_mode.get() != mode {
+                self.display_mode.replace(mode);
+                obj.notify_display_mode();
+            }
+
+            *self.search_term.borrow_mut() = new_term;
+
+            let filter = self.filtered_list.filter().unwrap();
+            filter.emit_by_name::<()>("changed", &[&strict]);
+            obj.notify_search_term();
+        }
     }
 
     #[glib::derived_properties]
@@ -398,6 +467,24 @@ impl DirView {
             .activate_action("file-selector.accept", None);
     }
 
+    #[template_callback]
+    fn searching_to_status_page_icon(&self) -> &str {
+        match self.display_mode() {
+            DisplayMode::Search => "nautilus-folder-search-symbolic",
+            DisplayMode::Content => "folder-symbolic",
+            DisplayMode::Loading => "folder-symbolic",
+        }
+    }
+
+    #[template_callback]
+    fn searching_to_status_page_title(&self) -> String {
+        match self.display_mode() {
+            DisplayMode::Search => gettextrs::gettext("Search is empty"),
+            DisplayMode::Content => gettextrs::gettext("Folder is empty"),
+            DisplayMode::Loading => gettextrs::gettext("Folder is empty"),
+        }
+    }
+
     pub fn selected(&self) -> Option<Vec<String>> {
         let vec = if self.directories_only() {
             match self.folder().unwrap().path() {
@@ -517,6 +604,17 @@ impl DirView {
                 let info = obj
                     .downcast_ref::<gio::FileInfo>()
                     .expect("Should be file info");
+                let search_term = this.imp().search_term.borrow();
+
+                if search_term.is_some()
+                    && !info
+                        .display_name()
+                        .trim()
+                        .to_lowercase()
+                        .starts_with(search_term.as_ref().unwrap())
+                {
+                    return false;
+                }
 
                 if this.imp().directories_only.get() && !this.is_directory(info) {
                     return false;
