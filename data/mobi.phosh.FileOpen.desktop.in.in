@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=PhoshFileSelectorDemo
+Name=Open File
 Exec=@DEMO@
-Icon=mobi.phosh.FileSelectorDemo
+Icon=mobi.phosh.FileOpen
 Terminal=false
 Type=Application
 Categories=Utility;

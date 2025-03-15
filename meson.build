@@ -6,8 +6,6 @@ project(
   default_options: ['warning_level=2', 'werror=false'],
 )
 
-demo = 'pfs-demo'
-
 i18n = import('i18n')
 gnome = import('gnome')
 pkgconfig = import('pkgconfig')
