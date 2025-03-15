@@ -1,0 +1,5 @@
+#[allow(dead_code)]
+pub static VERSION: &str = @VERSION@;
+pub static GETTEXT_PACKAGE: &str = @GETTEXT_PACKAGE@;
+pub static LOG_DOMAIN: &str = @LOG_DOMAIN@;
+pub static LOCALEDIR: &str = @LOCALEDIR@;

@@ -33,7 +33,7 @@ mod imp {
 
             gio::resources_register_include_impl(include_bytes!(concat!(
                 env!("PFS_RESOURCE_DIR"),
-                "/",
+                "/examples/demo/",
                 "demo.gresource"
             )))
             .expect("Failed to register pfs resources.");

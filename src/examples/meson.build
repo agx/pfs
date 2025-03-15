@@ -9,3 +9,5 @@ executable(
   link_with: cargo_static_lib_build,
   dependencies: [gtk_dep, libadwaita_dep],
 )
+
+subdir('demo')

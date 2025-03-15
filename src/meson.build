@@ -33,33 +33,6 @@ else
   rust_target = 'debug'
 endif
 
-if get_option('examples')
-
-  gnome.compile_resources('demo', 'demo.gresource.xml', gresource_bundle: true)
-
-  cargo_demo_build = custom_target(
-    'cargo-build-demo',
-    build_by_default: true,
-    build_always_stale: true,
-    output: 'pfs-demo',
-    console: true,
-    install: true,
-    install_dir: get_option('bindir'),
-    command: [
-      'env',
-      cargo_env,
-      cargo_bin,
-      'build',
-      cargo_opt,
-      '&&',
-      'cp',
-      meson.project_build_root() / 'src' / rust_target / 'pfs-demo',
-      '@OUTPUT@',
-    ],
-  )
-
-endif
-
 pfs_inc = include_directories('include/')
 libpfs_deps = [libadwaita_dep, gtk_dep, gobject_dep]
 

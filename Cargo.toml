@@ -1,6 +1,6 @@
 [package]
 name = "PhoshFileSelector"
-version = "0.0.0"
+version = "0.0.1"
 edition = "2021"
 
 [lib]
@@ -10,7 +10,7 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
 name = "pfs-demo"
-path = "src/pfs_demo.rs"
+path = "src/examples/demo/pfs_demo.rs"
 
 [dependencies]
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
