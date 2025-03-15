@@ -39,6 +39,17 @@
                     <lookup name="display-mode">PfsDirView</lookup>
                   </closure>
                 </binding>
+                <property name="child">
+                  <object class="AdwSpinner">
+                    <binding name="visible">
+                      <closure type="gboolean" function="loading_to_status_page_spinner">
+                        <lookup name="display-mode">PfsDirView</lookup>
+                      </closure>
+                    </binding>
+                    <property name="width-request">32</property>
+                    <property name="height-request">32</property>
+                  </object>
+                </property>
                 <style>
                   <class name="compact"/>
                 </style>
@@ -52,6 +63,7 @@
 
   <object class="GtkDirectoryList" id="directory_list">
     <property name="attributes">standard::display-name,standard::icon,standard::content-type,time::modified,thumbnail::*</property>
+    <signal name="notify::loading" handler="on_loading_changed" swapped="true"/>
   </object>
   <object class="GtkFilterListModel" id="type_filtered_list">
     <property name="model">directory_list</property>

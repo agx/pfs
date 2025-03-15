@@ -481,7 +481,28 @@ impl DirView {
         match self.display_mode() {
             DisplayMode::Search => gettextrs::gettext("Search is empty"),
             DisplayMode::Content => gettextrs::gettext("Folder is empty"),
-            DisplayMode::Loading => gettextrs::gettext("Folder is empty"),
+            DisplayMode::Loading => gettextrs::gettext("Folder is loading…"),
+        }
+    }
+
+    #[template_callback]
+    fn on_loading_changed(&self) {
+        let mode;
+
+        if self.imp().directory_list.is_loading() {
+            mode = DisplayMode::Loading;
+        } else {
+            mode = DisplayMode::Content;
+        }
+        self.imp().display_mode.replace(mode);
+        self.imp().obj().notify_display_mode();
+    }
+
+    #[template_callback]
+    fn loading_to_status_page_spinner(&self) -> bool {
+        match self.display_mode() {
+            DisplayMode::Loading => true,
+            _ => false,
         }
     }
 
