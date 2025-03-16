@@ -2,7 +2,7 @@ include:
  - project: 'guidog/meta-phosh'
    ref: '3629f479a3b1d37077137f05f988028c6e712378'
    file: '/ci/phosh-common-jobs.yml'
- - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/d03cddbcff35f26861429fc816c00323f48e99af/templates/ci-fairy.yml'
+ - remote: 'https://gitlab.gnome.org/Infrastructure/Mirrors/lorry-mirrors/gitlab_freedesktop_org/freedesktop/ci-templates/-/raw/d03cddbcff35f26861429fc816c00323f48e99af/templates/ci-fairy.yml'
 
 stages:
  - build
@@ -95,7 +95,7 @@ check-commit-log:
     GIT_DEPTH: "100"
   needs: []
   script: |
-    ci-fairy check-commits --junit-xml=commit-message-junit-report.xml
+    ci-fairy check-commits --signed-off-by --junit-xml=commit-message-junit-report.xml
   artifacts:
     reports:
       junit: commit-message-junit-report.xml
