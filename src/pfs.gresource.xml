@@ -10,6 +10,7 @@
     <file preprocess="xml-stripblanks">places-item.ui</file>
     <file preprocess="xml-stripblanks" alias="icons/scalable/status/funnel-symbolic.svg">../data/icons/funnel-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="icons/scalable/status/settings-symbolic.svg">../data/icons/settings-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="icons/scalable/status/nautilus-folder-search-symbolic.svg">../data/icons/nautilus-folder-search-symbolic.svg</file>
     <file compressed="true" alias="style.css">stylesheet/style.css</file>
   </gresource>
 </gresources>

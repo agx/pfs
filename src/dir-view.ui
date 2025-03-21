@@ -29,8 +29,16 @@
             <property name="name">empty</property>
             <property name="child">
               <object class="AdwStatusPage">
-                <property name="icon-name">folder-symbolic</property>
-                <property name="title" translatable="yes">Folder is empty</property>
+                <binding name="icon-name">
+                  <closure type="gchararray" function="searching_to_status_page_icon">
+                    <lookup name="display-mode">PfsDirView</lookup>
+                  </closure>
+                </binding>
+                <binding name="title">
+                  <closure type="gchararray" function="searching_to_status_page_title">
+                    <lookup name="display-mode">PfsDirView</lookup>
+                  </closure>
+                </binding>
                 <style>
                   <class name="compact"/>
                 </style>
