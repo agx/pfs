@@ -1,4 +1,11 @@
+phosh 0.0.2
+-----------
+March 2025
+* file chooser: Add search in file open mode
+* file chooser: Indicate loading state
+* Move demo to separate folder
+
 phosh 0.0.1
 -----------
 December 2024
-* Initial file choser portal
+* Initial file chooser portal
