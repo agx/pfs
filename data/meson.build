@@ -1,22 +1,28 @@
-desktopconf = configuration_data()
-desktopconf.set('DEMO', demo)
-desktop_file = 'mobi.phosh.FileSelectorDemo.desktop'
-merged = i18n.merge_file(
-  input: configure_file(
-    input: desktop_file + '.in.in',
-    output: desktop_file + '.in',
-    configuration: desktopconf,
-  ),
-  output: desktop_file,
-  po_dir: '../po',
-  install: get_option('examples'),
-  install_dir: get_option('datadir') / 'applications',
-  type: 'desktop',
-)
+examples = [['mobi.phosh.FileSelectorDemo', 'pfs-demo'], ['mobi.phosh.FileOpen', 'pfs-open']]
+
+merged = []
+foreach example : examples
+
+  desktopconf = configuration_data()
+  desktopconf.set('DEMO', example[1])
+
+  merged += i18n.merge_file(
+    input: configure_file(
+      input: example[0] + '.desktop.in.in',
+      output: example[0] + '.desktop.in',
+      configuration: desktopconf,
+    ),
+    output: example[0] + '.desktop',
+    po_dir: '../po',
+    install: get_option('examples'),
+    install_dir: get_option('datadir') / 'applications',
+    type: 'desktop',
+  )
+endforeach
 
 desktop_utils = find_program('desktop-file-validate', required: false)
 if desktop_utils.found()
-  test('Validate desktop file', desktop_utils, args: [merged])
+  test('Validate desktop file', desktop_utils, args: merged)
 endif
 
 install_data(

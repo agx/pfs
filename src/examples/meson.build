@@ -11,3 +11,4 @@ executable(
 )
 
 subdir('demo')
+subdir('open')

@@ -12,6 +12,10 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 name = "pfs-demo"
 path = "src/examples/demo/pfs_demo.rs"
 
+[[bin]]
+name = "pfs-open"
+path = "src/examples/open/pfs_open.rs"
+
 [dependencies]
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
 glib-macros = "0.20.5"
