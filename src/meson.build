@@ -1,7 +1,12 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
 gnome = import('gnome')
 
-gnome.compile_resources('pfs', 'pfs.gresource.xml', gresource_bundle: true, install_dir: pkgdatadir)
+compiled_resources = gnome.compile_resources(
+  'pfs',
+  'pfs.gresource.xml',
+  gresource_bundle: true,
+  install_dir: pkgdatadir,
+)
 
 conf = configuration_data()
 conf.set_quoted('VERSION', meson.project_version())
@@ -54,6 +59,7 @@ cargo_static_lib_build = custom_target(
     meson.project_build_root() / 'src' / rust_target / 'libpfs.a',
     '@OUTPUT@',
   ],
+  depends: compiled_resources,
 )
 
 if get_option('shared-lib')
@@ -92,6 +98,7 @@ if get_option('shared-lib')
       'libpfs-0.so',
       '@OUTPUT@',
     ],
+    depends: compiled_resources,
   )
 
   pkg = pkgconfig.generate(
