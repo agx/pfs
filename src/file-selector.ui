@@ -244,6 +244,9 @@
       </object>
     </property>
     <signal name="close-request" handler="on_close_requested" swapped="true"/>
+    <style>
+      <class name="pfs-file-selector"/>
+    </style>
   </template>
   <interface>
     <menu id="dir_view_menu">
