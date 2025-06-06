@@ -329,6 +329,7 @@ mod imp {
             obj.setup_gsettings();
             obj.set_directories_first(true);
             obj.setup_sort_and_filter();
+            obj.on_n_items_changed();
 
             obj.bind_property("folder", &self.directory_list.get(), "file")
                 .sync_create()
