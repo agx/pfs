@@ -1,3 +1,12 @@
+pfs 0.0.4
+---------
+June 2025
+* Fix initial empty state
+* Issues fixed
+    * https://gitlab.gnome.org/guidog/pfs/-/issues/13
+* Contributors:
+    * Guido Günther
+
 pfs 0.0.3
 ---------
 March 2025
